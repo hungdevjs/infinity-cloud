@@ -1,68 +1,54 @@
-import React, { useState } from "react"
-import {
-    Button,
-    Label,
-    Input,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-} from "reactstrap"
+import React, { useState, useContext, useEffect } from "react"
+import { Button, Input, Form } from "reactstrap"
 
 import history from "../configs/history"
+import { UserContext } from "../contexts/user.context"
 
 export default (props) => {
+    const userContext = useContext(UserContext)
+
+    const { username } = userContext
+
+    useEffect(() => {
+        if (!username || !username.trim()) {
+            history.push("/")
+        }
+    }, [])
+
     const {
         location: { pathname },
     } = history
 
     const option = pathname.substring(1)
 
-    const [header, setHeader] = useState("")
+    const iconCode = option === "chat" ? "fas fa-comment-alt" : "fas fa-gamepad"
 
-    const [isOpen, setOpen] = useState(false)
-
-    const toggle = () => setOpen(!isOpen)
-
-    const renderModal = () => (
-        <Modal isOpen={isOpen} toggle={toggle} centered>
-            <ModalHeader toggle={toggle}>{`${header} ${option}`}</ModalHeader>
-            <ModalBody>
-                <Label>{option.toUpperCase()} ID</Label>
-                <Input placeholder={`${option.toUpperCase()} ID`} />
-            </ModalBody>
-            <ModalFooter>
-                <Button color="primary">Confirm</Button>
-            </ModalFooter>
-        </Modal>
-    )
+    const [roomName, setRoomName] = useState("")
 
     return (
         <>
-            {renderModal()}
-            <h5 className="mb-3">
-                <i className="fas fa-comment-alt text-danger mr-2" />
+            <h5 className="mb-3 text-center">
+                <i className={`text-danger mr-2 ${iconCode}`} />
                 {option.toUpperCase()}
             </h5>
-            <Button
-                color="primary"
-                className="mr-2"
-                onClick={() => {
-                    setHeader("Join")
-                    setOpen(true)
+
+            <Form
+                className="w-100 mb-2 d-flex"
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    if (roomName.trim()) {
+                        history.push(`/${option}/${roomName}`)
+                    }
                 }}
             >
-                Join {option}
-            </Button>
-            <Button
-                color="success"
-                onClick={() => {
-                    setHeader("Create")
-                    setOpen(true)
-                }}
-            >
-                Create {option}
-            </Button>
+                <Input
+                    className="mr-2"
+                    placeholder="Room name"
+                    value={roomName}
+                    onChange={(e) => setRoomName(e.target.value.trim())}
+                />
+                <Button color="primary">Join</Button>
+            </Form>
         </>
     )
 }

@@ -9,10 +9,19 @@ const mainStyle = {
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.4)",
 }
 
+const Page404 = () => (
+    <div style={{ width: "300px" }}>
+        <p className="mb-0" style={{ fontSize: "4rem", fontWeight: 550 }}>
+            404
+        </p>
+        <p>Page not found.</p>
+    </div>
+)
+
 export default (props) => (
-    <Router history={history}>
-        <Switch>
-            <div className="bg-white px-4 py-3" style={mainStyle}>
+    <div className="bg-white px-4 py-3" style={mainStyle}>
+        <Router history={history}>
+            <Switch>
                 {routes.map((route, index) => (
                     <Route
                         key={index}
@@ -21,7 +30,8 @@ export default (props) => (
                         component={route.component}
                     />
                 ))}
-            </div>
-        </Switch>
-    </Router>
+                <Route path="/*" exact component={() => <Page404 />} />
+            </Switch>
+        </Router>
+    </div>
 )

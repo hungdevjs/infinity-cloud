@@ -5,6 +5,7 @@ import "react-perfect-scrollbar/dist/css/styles.css"
 import "./App.css"
 
 import Layout from "./layout"
+import UserContextProvider from "./contexts/user.context"
 
 const appStyle = {
     backgroundImage: "url('/bgblue.jpg')",
@@ -14,12 +15,14 @@ const appStyle = {
 
 function App() {
     return (
-        <div
-            className="App min-vh-100 min-vw-100 d-flex align-items-center justify-content-center"
-            style={appStyle}
-        >
-            <Layout />
-        </div>
+        <UserContextProvider>
+            <div
+                className="App min-vh-100 min-vw-100 d-flex align-items-center justify-content-center"
+                style={appStyle}
+            >
+                <Layout />
+            </div>
+        </UserContextProvider>
     )
 }
 
