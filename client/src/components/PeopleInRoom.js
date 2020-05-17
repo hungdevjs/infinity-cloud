@@ -1,18 +1,22 @@
-import React from "react"
-import PerfectScrollbar from "react-perfect-scrollbar"
+import React, { useState } from "react"
 
-export default ({ people }) => (
-    <div
-        className="mb-2 p-2"
-        style={{
-            height: "70vh",
-            border: "1px solid #bbb",
-            borderRadius: "4px",
-        }}
-    >
-        <p className="text-center">People in this room</p>
-        <div>
-            <PerfectScrollbar>
+export default ({ people }) => {
+    const [isPhone, setIsPhone] = useState(window.innerWidth < 768)
+
+    window.addEventListener("resize", () => setIsPhone(window.innerWidth < 768))
+
+    return (
+        <div
+            className="mb-2 p-2"
+            style={{
+                height: isPhone ? "" : "70vh",
+                border: "1px solid #bbb",
+                borderRadius: "4px",
+                overflowY: "scroll",
+            }}
+        >
+            <p className="text-center">People in this room</p>
+            <div>
                 {people.map((item) => (
                     <div
                         key={item.id}
@@ -30,7 +34,7 @@ export default ({ people }) => (
                         <p className="mb-0">{item.username}</p>
                     </div>
                 ))}
-            </PerfectScrollbar>
+            </div>
         </div>
-    </div>
-)
+    )
+}

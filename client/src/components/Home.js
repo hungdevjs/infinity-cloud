@@ -30,6 +30,7 @@ export default (props) => {
                             placeholder="Your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            autoFocus
                         />
                         <Button color="primary" type="submit">
                             Set

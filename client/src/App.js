@@ -17,7 +17,7 @@ function App() {
     return (
         <UserContextProvider>
             <div
-                className="App min-vh-100 min-vw-100 d-flex align-items-center justify-content-center"
+                className="App min-vh-100 min-vw-100 d-flex align-items-center justify-content-center py-3"
                 style={appStyle}
             >
                 <Layout />

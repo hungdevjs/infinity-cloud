@@ -46,6 +46,7 @@ export default (props) => {
                     placeholder="Room name"
                     value={roomName}
                     onChange={(e) => setRoomName(e.target.value.trim())}
+                    autoFocus
                 />
                 <Button color="primary">Join</Button>
             </Form>
