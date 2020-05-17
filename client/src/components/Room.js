@@ -4,10 +4,10 @@ import io from "socket.io-client"
 
 import { UserContext } from "../contexts/user.context"
 import history from "../configs/history"
-
+import { serverURL } from "../configs/constant"
 import Messages from "./Messages"
 
-let socket = io("http://localhost:5000")
+let socket = io(serverURL)
 socket.on("id", (res) => localStorage.setItem("socketId", res.id))
 
 export default (props) => {
@@ -30,7 +30,7 @@ export default (props) => {
         }
 
         if (!localStorage.getItem("socketId")) {
-            socket = io("http://localhost:5000")
+            socket = io(serverURL)
             socket.on("id", (res) => localStorage.setItem("socketId", res.id))
         }
 
