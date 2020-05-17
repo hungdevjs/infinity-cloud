@@ -7,7 +7,7 @@ import history from "../configs/history"
 
 import Messages from "./Messages"
 
-const socket = io("http://localhost:5000")
+let socket = io("http://localhost:5000")
 socket.on("id", (res) => localStorage.setItem("socketId", res.id))
 
 export default (props) => {
@@ -27,6 +27,11 @@ export default (props) => {
         if (!username || !username.trim()) {
             history.push("/")
             return
+        }
+
+        if (!localStorage.getItem("socketId")) {
+            socket = io("http://localhost:5000")
+            socket.on("id", (res) => localStorage.setItem("socketId", res.id))
         }
 
         socket.emit("join", { username, roomName })
@@ -55,6 +60,7 @@ export default (props) => {
         return () => {
             socket.disconnect()
             localStorage.removeItem("socketId")
+            history.push("/")
         }
     }, [])
 
