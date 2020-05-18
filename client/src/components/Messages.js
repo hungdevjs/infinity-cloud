@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react"
 import { Row, Col, Input, Button, Form, FormGroup } from "reactstrap"
-import PerfectScrollbar from "react-perfect-scrollbar"
 
 import PeopleInRoom from "./PeopleInRoom"
 
