@@ -1,11 +1,7 @@
-import Home from "../components/Home"
-import ChatAndGame from "../components/ChatAndGame"
-import Room from "../components/Room"
+import Home from "../pages/Home"
+import Login from "../pages/Login"
 
 export default [
     { path: "/", component: Home },
-    { path: "/chat", component: ChatAndGame },
-    { path: "/game", component: ChatAndGame },
-    { path: "/chat/:roomName", component: Room },
-    { path: "/game/:roomName", component: Room },
+    { path: "/login", component: Login }
 ]
