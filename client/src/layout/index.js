@@ -1,8 +1,12 @@
 import React from "react"
 import { Router, Route, Switch } from "react-router-dom"
+import { connect } from 'react-redux'
 
 import history from "../configs/history"
 import routes from "../configs/routes"
+
+import Login from '../pages/Login'
+import PrivateComponent from '../components/PrivateComponent'
 
 const Page404 = () => (
     <div>
@@ -13,7 +17,7 @@ const Page404 = () => (
     </div>
 )
 
-export default (props) => (
+const Layout = ({ user }) => (
     <div>
         <Router history={history}>
             <Switch>
@@ -22,11 +26,18 @@ export default (props) => (
                         key={index}
                         path={route.path}
                         exact
-                        component={route.component}
+                        component={() => <PrivateComponent user={user} route={route} />}
                     />
                 ))}
+                <Route path="/login" exact component={Login} />
                 <Route path="/*" exact component={() => <Page404 />} />
             </Switch>
         </Router>
     </div>
 )
+
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+export default connect(mapStateToProps)(Layout)
