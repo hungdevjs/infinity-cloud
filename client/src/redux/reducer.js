@@ -1,5 +1,5 @@
 export default (state = {
-    user: null,
+    user: { name: 'hung' },
     isLoading: false,
     isOpen: false
 }, action) => {
