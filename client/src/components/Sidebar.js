@@ -7,14 +7,14 @@ export default () => {
 
     return (
         <Sidebar
-            sidebar={SidebarContent}
+            sidebar={<SidebarContent />}
             open={sidebarOpen}
             onSetOpen={onSetSidebarOpen}
             styles={{ sidebar: { background: "white" } }}
         >
-            <button onClick={() => onSetSidebarOpen(true)}>
-                Open sidebar
-                </button>
+            <div className="ml-2 mt-1">
+                <i className="fas fa-bars" style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => onSetSidebarOpen(true)} />
+            </div>
         </Sidebar>
     );
 

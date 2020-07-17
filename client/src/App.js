@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./App.css"
 
 import Layout from "./layout"
-import Sidebar from "./components/Sidebar"
 function App() {
     return (
         <Provider store={store}>
