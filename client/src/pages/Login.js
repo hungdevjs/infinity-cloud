@@ -18,6 +18,7 @@ export default () => {
     return <>
         <Form onSubmit={e => onSubmit(e)}>
             <FormGroup>
+                <h4>Infinity Cloud</h4>
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText style={iconStyle}>
