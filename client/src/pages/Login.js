@@ -1,18 +1,23 @@
 import React, { useState } from 'react'
-import { Form, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap';
+import { connect } from "react-redux"
+import { Form, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap'
+
+import { userLogin } from "../redux/action"
+import noti from "../utils/noti"
 
 const iconStyle = {
     width: '40px'
 }
 
-export default () => {
+const Login = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const onSubmit = e => {
+    const onSubmit = async e => {
         e.preventDefault()
 
         // send email and password to server 
+        await props.userLogin({ email, password })
     }
 
     return <>
@@ -44,3 +49,13 @@ export default () => {
         </Form>
     </>
 }
+
+const mapStateToProps = state => ({
+    user: state.user
+})
+
+const mapDispatchToProps = {
+    userLogin
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
