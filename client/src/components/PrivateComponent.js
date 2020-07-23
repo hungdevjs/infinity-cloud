@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react'
-import history from '../configs/history'
+import { connect } from "react-redux"
 import Sidebar from './Sidebar'
-export default ({ user, route }) => {
+
+import { userGetInfo } from "../redux/action"
+
+const PrivateComponent = (props) => {
+    const { user, route } = props
+
     useEffect(() => {
-        if (!user && route.isLogged) history.push('/login')
+        if (!user && route.isLogged) {
+            props.userGetInfo()
+        }
     }, [])
 
     const Component = route.component
@@ -13,3 +20,9 @@ export default ({ user, route }) => {
         <Component />
     </>
 }
+
+const mapDispatchToProps = {
+    userGetInfo
+}
+
+export default connect(null, mapDispatchToProps)(PrivateComponent)

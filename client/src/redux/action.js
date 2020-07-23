@@ -1,4 +1,4 @@
-import { login } from "../utils/api"
+import { login, getInfo } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
@@ -37,4 +37,22 @@ export const userLogin = data => async dispatch => {
     }
 
     dispatch(setLoading(false))
+}
+
+export const userGetInfo = () => async dispatch => {
+    try {
+        const res = await getInfo()
+
+        if (!res.data || !res.data.status) {
+            throw new Error()
+        }
+
+        dispatch({
+            type: "SET_USER",
+            payload: res.data.email
+        })
+
+    } catch (err) {
+        history.push("/login")
+    }
 }

@@ -25,3 +25,5 @@ api.interceptors.request.use(
 export default api
 
 export const login = data => api.post("/account/login", data)
+
+export const getInfo = () => api.get("/account/info")

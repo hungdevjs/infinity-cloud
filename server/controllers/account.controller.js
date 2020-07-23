@@ -18,12 +18,27 @@ module.exports.login = async (req, res) => {
         }
 
         const accessToken = jwt.sign(
-            { email, password },
+            { email },
             process.env.ACCESS_TOKEN_SECRET_KEY,
             { expiresIn: process.env.JWT_ACCESS_TOKEN_LIFE }
         )
 
         res.json(successFormat({ accessToken }))
+    } catch (err) {
+        res.json(errorFormat(err.message))
+    }
+}
+
+module.exports.getInfo = async (req, res) => {
+    try {
+        const token = req.headers.authorization
+            ? req.headers.authorization.split(" ")[1]
+            : ""
+
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+        const userInfo = jwt.decode(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+
+        res.json(successFormat(userInfo))
     } catch (err) {
         res.json(errorFormat(err.message))
     }
