@@ -1,7 +1,13 @@
 export default (state = {
     user: null,
     isLoading: false,
-    isOpen: false
+    isOpen: false,
+    modal: {
+        isOpen: false,
+        type: null,
+        message: null,
+        onConfirm: null
+    }
 }, action) => {
     switch (action.type) {
         case "SET_USER":
@@ -14,6 +20,12 @@ export default (state = {
             return {
                 ...state,
                 isLoading: action.payload
+            }
+
+        case "SET_MODAL":
+            return {
+                ...state,
+                modal: action.payload
             }
 
         default:

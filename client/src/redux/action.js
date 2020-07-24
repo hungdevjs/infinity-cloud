@@ -2,7 +2,9 @@ import { login, getInfo } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
-export const setLoading = status => ({ type: "SET_LOADING", payload: status })
+export const setLoading = status => async dispatch => dispatch({ type: "SET_LOADING", payload: status })
+
+export const setModal = payload => async dispatch => dispatch({ type: "SET_MODAL", payload })
 
 export const userLogin = data => async dispatch => {
     dispatch(setLoading(true))

@@ -1,7 +1,9 @@
 const express = require("express")
 const cors = require("cors")
 const mongoose = require("mongoose")
-const morgan = require('morgan');
+const morgan = require("morgan")
+
+const auth = require("./middlewares/auth")
 
 require("dotenv").config()
 
@@ -30,5 +32,8 @@ connection.once("open", () =>
 
 const accountRoute = require("./routes/account.route")
 app.use("/account", accountRoute)
+
+const fileRoute = require("./routes/file.route")
+app.use("/file", auth, fileRoute)
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))

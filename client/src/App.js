@@ -13,6 +13,7 @@ import "./App.css"
 
 import Layout from "./layout"
 import Loading from "./components/Loading"
+import Modal from "./components/Modal"
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
             >
                 <Layout />
                 <Loading />
+                <Modal />
                 <ReactNotification />
             </div>
         </Provider>
