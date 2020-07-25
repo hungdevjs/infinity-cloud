@@ -60,10 +60,10 @@ export const userGetInfo = () => async dispatch => {
     }
 }
 
-export const userGetFileAndFolder = () => async dispatch => {
+export const userGetFileAndFolder = ({ isDeleted }) => async dispatch => {
     dispatch(setLoading(true))
     try {
-        const res = await getFileAndFolder()
+        const res = await getFileAndFolder(isDeleted)
 
         const { files, folders } = res.data
 

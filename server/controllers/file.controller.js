@@ -9,11 +9,13 @@ module.exports.getFileAndFolder = async (req, res) => {
     try {
         const { _id } = req.user
 
-        const files = await File.find({ isDeleted: false, userId: _id, folderId: null })
+        const isDeleted = req.query.isDeleted === "true"
+
+        const files = await File.find({ isDeleted, userId: _id, folderId: null })
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders")
 
-        const folders = user.folders.filter(item => !item.isDeleted)
+        const folders = user.folders.filter(item => item.isDeleted === isDeleted)
 
         res.json(successFormat({ files, folders }))
     } catch (err) {
