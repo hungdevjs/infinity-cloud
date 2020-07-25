@@ -11,8 +11,8 @@ const Home = props => {
     }, [])
 
     return <div>
-        <FileFolder type="Files" data={props.files} />
         <FileFolder type="Folders" data={props.folders} />
+        <FileFolder type="Files" data={props.files} />
     </div>
 }
 

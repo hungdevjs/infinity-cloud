@@ -19,7 +19,7 @@ function App() {
     return (
         <Provider store={store}>
             <div
-                className="App min-vh-100 min-vw-100"
+                className="App min-vh-100"
             >
                 <Layout />
                 <Loading />
