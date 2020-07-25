@@ -11,7 +11,7 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
-    url: {
+    fileId: {
         type: String,
         required: true
     },

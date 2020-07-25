@@ -7,8 +7,6 @@ import { setModal } from "../redux/action"
 function ModalContainer(props) {
     const { isOpen, type, message, onConfirm } = props
 
-    if (!isOpen) return null
-
     const modalInfo = () => {
         switch (type) {
             case "danger":

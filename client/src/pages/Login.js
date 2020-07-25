@@ -20,7 +20,7 @@ const Login = (props) => {
         await props.userLogin({ email, password })
     }
 
-    return <>
+    return <div className="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center">
         <Form onSubmit={e => onSubmit(e)}>
             <FormGroup>
                 <h4>Infinity Cloud</h4>
@@ -47,7 +47,7 @@ const Login = (props) => {
                 <Button className="w-100" type="submit" color="primary" size="sm">Log in</Button>
             </FormGroup>
         </Form>
-    </>
+    </div>
 }
 
 const mapStateToProps = state => ({

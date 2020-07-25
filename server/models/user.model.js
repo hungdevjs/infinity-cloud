@@ -15,7 +15,7 @@ const userSchema = new Schema({
         minlength: 8,
         trim: true
     },
-    folders: [{ name: { type: String } }],
+    folders: [{ name: { type: String }, isDeleted: { type: Boolean, required: true } }],
     isDeleted: {
         type: Boolean,
         required: true

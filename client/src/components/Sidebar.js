@@ -12,7 +12,7 @@ export default () => {
             onSetOpen={onSetSidebarOpen}
             styles={{ sidebar: { background: "white" } }}
         >
-            <div className="ml-2 mt-1">
+            <div className="ml-3 mt-3">
                 <i className="fas fa-bars" style={{ cursor: 'pointer', fontSize: '1.25rem' }} onClick={() => onSetSidebarOpen(true)} />
             </div>
         </Sidebar>

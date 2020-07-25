@@ -15,10 +15,10 @@ const PrivateComponent = (props) => {
 
     const Component = route.component
 
-    return <>
+    return <div className="p-5">
         <Sidebar />
         <Component />
-    </>
+    </div>
 }
 
 const mapDispatchToProps = {

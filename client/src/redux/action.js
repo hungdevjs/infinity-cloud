@@ -1,4 +1,4 @@
-import { login, getInfo } from "../utils/api"
+import { login, getInfo, getFileAndFolder } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
@@ -55,6 +55,27 @@ export const userGetInfo = () => async dispatch => {
         })
 
     } catch (err) {
+        localStorage.removeItem("accessToken")
         history.push("/login")
     }
+}
+
+export const userGetFileAndFolder = () => async dispatch => {
+    dispatch(setLoading(true))
+    try {
+        const res = await getFileAndFolder()
+
+        const { files, folders } = res.data
+
+        dispatch({
+            type: "SET_FILES_FOLDERS",
+            payload: { files, folders }
+        })
+    } catch (err) {
+        noti({
+            type: "danger",
+            message: err.message
+        })
+    }
+    dispatch(setLoading(false))
 }

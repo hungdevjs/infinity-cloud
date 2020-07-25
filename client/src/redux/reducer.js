@@ -1,13 +1,14 @@
 export default (state = {
     user: null,
     isLoading: false,
-    isOpen: false,
     modal: {
         isOpen: false,
         type: null,
         message: null,
         onConfirm: null
-    }
+    },
+    files: null,
+    folders: null
 }, action) => {
     switch (action.type) {
         case "SET_USER":
@@ -25,7 +26,17 @@ export default (state = {
         case "SET_MODAL":
             return {
                 ...state,
-                modal: action.payload
+                modal: {
+                    ...state.modal,
+                    ...action.payload
+                }
+            }
+
+        case "SET_FILES_FOLDERS":
+            return {
+                ...state,
+                files: action.payload.files,
+                folders: action.payload.folders
             }
 
         default:
