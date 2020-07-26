@@ -73,27 +73,25 @@ export default ({ type, data, isDeleted }) => {
 
     return <div className="px-3 mb-2">
         <h5>{type}</h5>
-        {dataRender && dataRender.length > 0 ? <>
-            <Row className="mb-3">
-                <Col md={4} className="mb-2">
-                    <Input placeholder="Search" onChange={e => onSearch(e)} />
-                </Col>
-                <Col md={8} />
-            </Row>
-            <Row>
-                {[...dataRender, ...dataRender, ...dataRender, ...dataRender, ...dataRender].map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
-                    <FolderContainer color={typeColor(item.type)}>
-                        <span style={{ overflow: "hidden" }}>{item.name}</span>
-                        <div className="mt-2">
-                            {!isDeleted ? <>
-                                {isFiles && <HoverOpacity><i className="fas fa-download mr-2" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
-                                <HoverOpacity><i className="fas fa-trash" title="Delete" /></HoverOpacity>
-                            </> : <HoverOpacity><i className="fas fa-trash-restore" title="Restore" /></HoverOpacity>}
-                        </div>
-                    </FolderContainer>
-                </Col>)}
-            </Row>
-        </> : <Row>
+        {data && data.length > 0 && <Row className="mb-3">
+            <Col md={4} className="mb-2">
+                <Input placeholder="Search" onChange={e => onSearch(e)} />
+            </Col>
+            <Col md={8} />
+        </Row>}
+        {dataRender && dataRender.length > 0 ? <Row>
+            {[...dataRender, ...dataRender, ...dataRender, ...dataRender, ...dataRender].map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
+                <FolderContainer color={typeColor(item.type)}>
+                    <span style={{ overflow: "hidden" }}>{item.name}</span>
+                    <div className="mt-2">
+                        {!isDeleted ? <>
+                            {isFiles && <HoverOpacity><i className="fas fa-download mr-2" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
+                            <HoverOpacity><i className="fas fa-trash" title="Delete" /></HoverOpacity>
+                        </> : <HoverOpacity><i className="fas fa-trash-restore" title="Restore" /></HoverOpacity>}
+                    </div>
+                </FolderContainer>
+            </Col>)}
+        </Row> : <Row>
                 <Col md={6}>
                     <Alert color="primary">No {type.toLowerCase()} to display</Alert>
                 </Col>

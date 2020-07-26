@@ -10,7 +10,7 @@ const UserIconContainer = styled.span`
     z-index: 1000000;
     transition: 0.2s ease;
     &:hover {
-        transform: scale(1.1)
+        color: #888
     }
 `
 const UserOption = styled.div`
