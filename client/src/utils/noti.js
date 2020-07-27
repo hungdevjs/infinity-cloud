@@ -7,8 +7,8 @@ export default notiInfo => {
         title,
         message,
         type,
-        insert: "top",
-        container: "top-right",
+        insert: "bottom",
+        container: "bottom-left",
         animationIn: ["animated", "fadeIn"],
         animationOut: ["animated", "fadeOut"],
         dismiss: {

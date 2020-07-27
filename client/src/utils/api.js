@@ -45,6 +45,6 @@ export const login = data => api.post("/account/login", data)
 
 export const getInfo = () => api.get("/account/info")
 
-export const getFileAndFolder = isDeleted => api.get(`/file/fileAndFolder?isDeleted=${isDeleted}`)
+export const getFileAndFolder = isDeleted => api.get(`/api/file/fileAndFolder?isDeleted=${isDeleted}`)
 
-export const getFileInfo = id => api.get(`/file/${id}`)
+export const getFileInfo = id => api.get(`/api/file/${id}`)
