@@ -6,6 +6,7 @@ import { Form, FormGroup, Input, Button } from "reactstrap"
 import axios from "axios"
 
 import ViewModal from "./ViewModal"
+import useModal from "../hooks/useModal"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
@@ -29,8 +30,7 @@ const UploadFileButton = styled.button`
 `
 
 const UploadFileBtn = props => {
-    const [isOpen, setIsOpen] = useState(false)
-    const toggle = () => setIsOpen(!isOpen)
+    const [isOpen, toggle] = useModal()
 
     const [files, setFiles] = useState([])
 
@@ -40,13 +40,12 @@ const UploadFileBtn = props => {
         e.preventDefault()
 
         const formData = new FormData()
-        for (const key of Object.keys(files)) {
-            formData.append('files', files[key])
+        for (let i = 0; i < files.length; i++) {
+            formData.append("files", files[i]);
         }
+        console.log(formData)
 
-        console.log(FormData)
-
-        axios.post("http://localhost:8000/api/test", formData, {
+        api.post("http://localhost:8000/api/test", formData, {
         }).then(res => {
             console.log(res.data)
         })
