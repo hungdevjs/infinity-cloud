@@ -7,6 +7,7 @@ import axios from "axios"
 
 import ViewModal from "./ViewModal"
 import useModal from "../hooks/useModal"
+import { apiUpload } from "../utils/api"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
@@ -40,12 +41,12 @@ const UploadFileBtn = props => {
         e.preventDefault()
 
         const formData = new FormData()
-        for (let i = 0; i < files.length; i++) {
-            formData.append("files", files[i]);
+        for (const key of Object.keys(files)) {
+            formData.append('files', files[key])
         }
         console.log(formData)
 
-        api.post("http://localhost:8000/api/test", formData, {
+        axios.post("http://localhost:8000/api/test", formData, {
         }).then(res => {
             console.log(res.data)
         })
