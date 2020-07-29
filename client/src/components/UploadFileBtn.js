@@ -3,11 +3,9 @@ import { connect } from "react-redux"
 import styled from "styled-components"
 import { Form, FormGroup, Input, Button } from "reactstrap"
 
-import axios from "axios"
-
 import ViewModal from "./ViewModal"
 import useModal from "../hooks/useModal"
-import { apiUpload } from "../utils/api"
+import { uploadFiles } from "../utils/api"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
@@ -37,19 +35,18 @@ const UploadFileBtn = props => {
 
     const onFileChange = e => setFiles(e.target.files)
 
-    const onUpload = e => {
+    const onUpload = async e => {
         e.preventDefault()
 
         const formData = new FormData()
         for (const key of Object.keys(files)) {
             formData.append('files', files[key])
         }
+        // formData.append("files", files)
         console.log(formData)
 
-        axios.post("http://localhost:8000/api/test", formData, {
-        }).then(res => {
-            console.log(res.data)
-        })
+        const res = await uploadFiles(formData)
+        console.log(res)
     }
 
     const renderModal = () => <ViewModal
@@ -58,7 +55,7 @@ const UploadFileBtn = props => {
         title="Upload files"
         onConfirm={() => console.log("upload files")}
     >
-        <Form onSubmit={onUpload}>
+        <Form onSubmit={onUpload} encType="multipart/form-data">
             <FormGroup>
                 <Input type="file" multiple className="mb-3" onChange={onFileChange} />
                 <Button color="primary">Upload</Button>
