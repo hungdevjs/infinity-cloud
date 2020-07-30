@@ -7,6 +7,8 @@ import ViewModal from "./ViewModal"
 import useModal from "../hooks/useModal"
 import { uploadFiles } from "../utils/api"
 
+import { setModal } from "../redux/action"
+
 const UploadFileButton = styled.button`
     background-color: #ddd;
     width: 100%;
@@ -33,7 +35,18 @@ const UploadFileBtn = props => {
 
     const [files, setFiles] = useState([])
 
-    const onFileChange = e => setFiles(e.target.files)
+    const onFileChange = e => {
+        if (e.target.files.length > 5) {
+            props.setModal({
+                isOpen: true,
+                type: "danger",
+                message: "You can choose maximum 5 files each time"
+            })
+            e.target.value = ""
+            return
+        }
+        setFiles(e.target.files)
+    }
 
     const onUpload = async e => {
         e.preventDefault()
@@ -42,11 +55,8 @@ const UploadFileBtn = props => {
         for (const key of Object.keys(files)) {
             formData.append('files', files[key])
         }
-        // formData.append("files", files)
-        console.log(formData)
 
         const res = await uploadFiles(formData)
-        console.log(res)
     }
 
     const renderModal = () => <ViewModal
@@ -75,7 +85,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-
+    setModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadFileBtn)

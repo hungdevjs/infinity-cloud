@@ -13,14 +13,11 @@ const api = axios.create({
     },
 })
 
-const apiUpload = axios.create({
-    baseURL: BASE_URL,
-    timeout: 15000,
-    headers: {
-        "Content-Type": "multipart/form-data",
-    }
-});
-
 module.exports.getFileInfo = fileId => api.get(`/files/getInfo?token=${botToken}&fileId=${fileId}`)
 
-module.exports.sendFile = file => apiUpload.post(`/messages/sendFile?token=${botToken}&chatId=${chatId}`, file)
+module.exports.sendFile = formData => axios({
+    method: "post",
+    url: `https://api.icq.net/bot/v1/messages/sendFile?token=${botToken}&chatId=${chatId}`,
+    data: formData,
+    headers: { ...formData.getHeaders() }
+});

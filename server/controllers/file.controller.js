@@ -1,4 +1,7 @@
-const { getFileInfo } = require("../utils/api")
+const fs = require("fs")
+const FormData = require("form-data");
+
+const { getFileInfo, sendFile } = require("../utils/api")
 
 const { errorFormat, successFormat } = require("../utils/format")
 
@@ -38,4 +41,29 @@ module.exports.getFileInfo = async (req, res) => {
     } catch (err) {
         res.json(errorFormat(err.message))
     }
+}
+
+module.exports.uploadFile = async (req, res) => {
+    let data = null
+
+    if (req.files.length === 0) {
+        return res.json(errorFormat("No file to upload"))
+    }
+
+    try {
+        const formData = new FormData()
+        formData.append("file", fs.createReadStream(req.files[0].path))
+
+        sendFile(formData)
+            .then(data => {
+                // save file data to db here
+            })
+            .catch(err => console.log(err.message))
+
+        data = successFormat({ data: "Your file will be available soon" })
+    } catch (err) {
+        data = errorFormat(err.message)
+    }
+
+    res.json(data)
 }

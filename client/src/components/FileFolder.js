@@ -83,7 +83,7 @@ export default ({ type, data, isDeleted }) => {
             <Col md={8} />
         </Row>}
         {dataRender && dataRender.length > 0 ? <Row>
-            {[...dataRender, ...dataRender, ...dataRender, ...dataRender, ...dataRender].map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
+            {dataRender.map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
                 <FolderContainer color={typeColor(item.type)}>
                     <span style={{ overflow: "hidden" }}>{item.name}</span>
                     <div className="mt-2">
