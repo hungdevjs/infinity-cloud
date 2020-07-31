@@ -6,18 +6,19 @@ export default ({
     toggle,
     title,
     children,
-    onConfirm
+    onConfirm,
+    noFooter
 }) => (
         <Modal toggle={toggle} isOpen={isOpen} centered>
             <ModalHeader toggle={toggle}>{title}</ModalHeader>
             <ModalBody>
                 {children}
             </ModalBody>
-            <ModalFooter>
+            {!noFooter && <ModalFooter>
                 {onConfirm && <Button color="primary" onClick={onConfirm}>
                     Confirm
             </Button>}
                 <Button color="secondary" onClick={toggle}>Cancel</Button>
-            </ModalFooter>
+            </ModalFooter>}
         </Modal>
     )

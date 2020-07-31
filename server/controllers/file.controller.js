@@ -50,15 +50,19 @@ module.exports.uploadFile = async (req, res) => {
         return res.json(errorFormat("No file to upload"))
     }
 
-    try {
-        const formData = new FormData()
-        formData.append("file", fs.createReadStream(req.files[0].path))
+    const { _id } = req.user
 
-        sendFile(formData)
-            .then(data => {
-                // save file data to db here
-            })
-            .catch(err => console.log(err.message))
+    try {
+        for (const file of req.files) {
+            const formData = new FormData()
+            formData.append("file", fs.createReadStream(file.path))
+
+            sendFile(formData)
+                .then(data => {
+                    // save file data to db here
+                })
+                .catch(err => console.log(err.message))
+        }
 
         data = successFormat({ data: "Your file will be available soon" })
     } catch (err) {
@@ -66,4 +70,21 @@ module.exports.uploadFile = async (req, res) => {
     }
 
     res.json(data)
+}
+
+module.exports.getAllFolders = async (req, res) => {
+    try {
+        const { _id } = req.user
+
+        const user = await User.findOne({ _id }).select("folders")
+        if (!user) {
+            throw new Error("User doesn't exist")
+        }
+
+        const folders = user.folders.filter(item => !item.isDeleted)
+        res.json(successFormat({ folders }))
+    } catch (err) {
+        console.log(err.message)
+        res.json(errorFormat(err.message))
+    }
 }

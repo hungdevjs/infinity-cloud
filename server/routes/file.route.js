@@ -16,6 +16,8 @@ const controller = require("../controllers/file.controller")
 
 router.get("/fileAndFolder", controller.getFileAndFolder)
 
+router.get("/folders", controller.getAllFolders)
+
 router.get("/:_id", controller.getFileInfo)
 
 router.post("/upload", upload.array("files", 5), controller.uploadFile)

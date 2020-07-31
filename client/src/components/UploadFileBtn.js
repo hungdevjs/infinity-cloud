@@ -3,11 +3,13 @@ import { connect } from "react-redux"
 import styled from "styled-components"
 import { Form, FormGroup, Input, Button } from "reactstrap"
 
+import FolderSelected from "./FolderSelected"
 import ViewModal from "./ViewModal"
 import useModal from "../hooks/useModal"
 import { uploadFiles } from "../utils/api"
 
 import { setModal } from "../redux/action"
+import noti from "../utils/noti"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
@@ -35,6 +37,10 @@ const UploadFileBtn = props => {
 
     const [files, setFiles] = useState([])
 
+    const [folderId, setFolderId] = useState(null)
+
+    const maxFileSize = 2000000
+
     const onFileChange = e => {
         if (e.target.files.length > 5) {
             props.setModal({
@@ -45,6 +51,19 @@ const UploadFileBtn = props => {
             e.target.value = ""
             return
         }
+
+        for (const file of e.target.files) {
+            if (file.size > maxFileSize) {
+                props.setModal({
+                    isOpen: true,
+                    type: "danger",
+                    message: "Max size for each file is 2GB"
+                })
+                e.target.value = ""
+                return
+            }
+        }
+
         setFiles(e.target.files)
     }
 
@@ -57,17 +76,35 @@ const UploadFileBtn = props => {
         }
 
         const res = await uploadFiles(formData)
+        if (!res.data.status) {
+            props.setModal({
+                isOpen: true,
+                type: "danger",
+                message: res.data.error
+            })
+            return
+        }
+
+        toggle()
+        noti({
+            title: "Success",
+            type: "success",
+            message: res.data.data
+        })
     }
+
+    const onChangeFolder = e => setFolderId(e.value)
 
     const renderModal = () => <ViewModal
         isOpen={isOpen}
         toggle={toggle}
         title="Upload files"
-        onConfirm={() => console.log("upload files")}
+        noFooter
     >
         <Form onSubmit={onUpload} encType="multipart/form-data">
             <FormGroup>
                 <Input type="file" multiple className="mb-3" onChange={onFileChange} />
+                <FolderSelected onChange={onChangeFolder} />
                 <Button color="primary">Upload</Button>
             </FormGroup>
         </Form>
