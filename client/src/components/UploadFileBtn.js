@@ -1,15 +1,11 @@
 import React, { useState } from "react"
 import { connect } from "react-redux"
 import styled from "styled-components"
-import { Form, FormGroup, Input, Button } from "reactstrap"
 
-import FolderSelected from "./FolderSelected"
-import ViewModal from "./ViewModal"
+import FormUpload from "./FormUpload"
 import useModal from "../hooks/useModal"
-import { uploadFiles } from "../utils/api"
 
-import { setModal } from "../redux/action"
-import noti from "../utils/noti"
+import { setModal, upload } from "../redux/action"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
@@ -38,6 +34,8 @@ const UploadFileBtn = props => {
     const [files, setFiles] = useState([])
 
     const [folderId, setFolderId] = useState(null)
+
+    const [folderName, setFolderName] = useState("")
 
     const maxFileSize = 2000000
 
@@ -75,44 +73,28 @@ const UploadFileBtn = props => {
             formData.append('files', files[key])
         }
 
-        const res = await uploadFiles(formData)
-        if (!res.data.status) {
-            props.setModal({
-                isOpen: true,
-                type: "danger",
-                message: res.data.error
-            })
-            return
+        const cb = () => {
+            toggle()
+            setFolderName("")
+            setFolderId(null)
+            props.getData()
         }
 
-        toggle()
-        noti({
-            title: "Success",
-            type: "success",
-            message: res.data.data
-        })
+        props.upload({ formData, folderId, folderName, cb })
     }
 
     const onChangeFolder = e => setFolderId(e.value)
 
-    const renderModal = () => <ViewModal
-        isOpen={isOpen}
-        toggle={toggle}
-        title="Upload files"
-        noFooter
-    >
-        <Form onSubmit={onUpload} encType="multipart/form-data">
-            <FormGroup>
-                <Input type="file" multiple className="mb-3" onChange={onFileChange} />
-                <FolderSelected onChange={onChangeFolder} />
-                <Button color="primary">Upload</Button>
-            </FormGroup>
-        </Form>
-    </ViewModal>
-
     return <div className="mb-3">
-        {renderModal()}
-        {/* <p className="mb-2">{props.user}</p> */}
+        <FormUpload
+            isOpen={isOpen}
+            toggle={toggle}
+            folderName={folderName}
+            setFolderName={setFolderName}
+            onFileChange={onFileChange}
+            onChangeFolder={onChangeFolder}
+            onUpload={onUpload}
+        />
         <UploadFileButton onClick={toggle}>Upload files</UploadFileButton>
     </div>
 }
@@ -122,7 +104,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    setModal
+    setModal,
+    upload
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadFileBtn)

@@ -9,13 +9,15 @@ import { userGetFileAndFolder } from "../redux/action"
 
 const Home = props => {
     useEffect(() => {
-        props.userGetFileAndFolder({ isDeleted: props.isDeleted })
+        getData()
     }, [])
+
+    const getData = () => props.userGetFileAndFolder({ isDeleted: props.isDeleted })
 
     return <div>
         <Row>
-            <Col md={2}>
-                <UploadFileBtn />
+            <Col md={2} sm={6} xs={6}>
+                <UploadFileBtn getData={getData} />
             </Col>
         </Row>
         <FileFolder type="Folders" data={props.folders} isDeleted={props.isDeleted} />

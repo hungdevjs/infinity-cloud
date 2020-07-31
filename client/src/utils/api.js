@@ -49,6 +49,6 @@ export const getFileAndFolder = isDeleted => api.get(`/api/file/fileAndFolder?is
 
 export const getFileInfo = id => api.get(`/api/file/${id}`)
 
-export const uploadFiles = formData => apiUpload.post("/api/file/upload", formData)
+export const uploadFiles = (formData, folderId, folderName) => apiUpload.post(`/api/file/upload?folderId=${folderId}&folderName=${folderName}`, formData)
 
 export const getAllFolders = () => api.get("/api/file/folders")

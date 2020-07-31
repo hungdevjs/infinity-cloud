@@ -14,7 +14,9 @@ module.exports.getFileAndFolder = async (req, res) => {
 
         const isDeleted = req.query.isDeleted === "true"
 
-        const files = await File.find({ isDeleted, userId: _id, folderId: null })
+        const allFiles = await File.find({ isDeleted, userId: _id })
+
+        const files = allFiles.filter(item => !item.folderId)
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders")
 
@@ -50,18 +52,47 @@ module.exports.uploadFile = async (req, res) => {
         return res.json(errorFormat("No file to upload"))
     }
 
-    const { _id } = req.user
-
     try {
+        const { _id } = req.user
+
+        const user = await User.findOne({ _id }).select("folders")
+        if (!user) {
+            throw new Error("User doesn't exist")
+        }
+
+        const { folderId, folderName } = req.query
+        let newFolderId = null
+        if (folderName) {
+            const oldFolder = user.folders.find(item => item.name.trim() === folderName.trim())
+            if (!oldFolder) {
+                user.folders = [...user.folders, { name: folderName, isDeleted: false }]
+                await user.save()
+                newFolderId = user.folders.find(item => item.name === folderName)
+            } else {
+                newFolderId = oldFolder._id
+            }
+        }
+
         for (const file of req.files) {
             const formData = new FormData()
             formData.append("file", fs.createReadStream(file.path))
 
-            sendFile(formData)
-                .then(data => {
-                    // save file data to db here
-                })
-                .catch(err => console.log(err.message))
+            const res = await sendFile(formData)
+
+            // save file data to db here
+            const newFile = new File({
+                name: file.originalname,
+                type: file.mimetype,
+                fileId: res.data.fileId,
+                userId: _id,
+                isDeleted: false
+            })
+
+            if (folderId !== "null" || newFolderId) {
+                newFile.folderId = folderId || newFolderId
+            }
+
+            await newFile.save()
         }
 
         data = successFormat({ data: "Your file will be available soon" })

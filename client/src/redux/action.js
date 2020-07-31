@@ -1,4 +1,4 @@
-import { login, getInfo, getFileAndFolder } from "../utils/api"
+import { login, getInfo, getFileAndFolder, uploadFiles } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
@@ -77,5 +77,35 @@ export const userGetFileAndFolder = ({ isDeleted }) => async dispatch => {
             message: err.message
         })
     }
+    dispatch(setLoading(false))
+}
+
+export const upload = ({ formData, folderId, folderName, cb }) => async dispatch => {
+    dispatch(setLoading(true))
+
+    try {
+        const res = await uploadFiles(formData, folderId, folderName)
+        if (!res.data.status) {
+            dispatch(setModal({
+                isOpen: true,
+                type: "danger",
+                message: res.data.error
+            }))
+        } else {
+            noti({
+                title: "Success",
+                type: "success",
+                message: res.data.data
+            })
+
+            if (cb) cb()
+        }
+    } catch (err) {
+        noti({
+            type: "danger",
+            message: err.message
+        })
+    }
+
     dispatch(setLoading(false))
 }
