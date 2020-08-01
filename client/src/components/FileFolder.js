@@ -99,7 +99,7 @@ export default ({ type, data, isDeleted }) => {
         }
     }
 
-    return <div className="px-3 mb-2">
+    return <div className="mb-2">
         <h5>{type}</h5>
         {isFiles && <FileTypeFilter currentType={currentType} setCurrentType={setCurrentType} />}
         {data && data.length > 0 && <Row className="mb-3">

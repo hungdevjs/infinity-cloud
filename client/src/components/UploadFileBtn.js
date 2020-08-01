@@ -10,7 +10,6 @@ import { setModal, upload } from "../redux/action"
 const UploadFileButton = styled.button`
     background-color: #ddd;
     width: 100%;
-    margin: 0 16px;
     padding: 8px 16px;
     border-radius: 20px;
     border: 0;
