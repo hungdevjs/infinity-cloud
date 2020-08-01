@@ -96,7 +96,8 @@ export default props => {
         setDataRender(filteredData)
     }
 
-    const onDownload = async id => {
+    const onDownload = async (e, id) => {
+        e.stopPropagation()
         try {
             const res = await getFileInfo(id)
 
@@ -111,7 +112,8 @@ export default props => {
         }
     }
 
-    const onDelete = id => {
+    const onDelete = (e, id) => {
+        e.stopPropagation()
         setModal({
             isOpen: true,
             type: "danger",
@@ -120,7 +122,8 @@ export default props => {
         })
     }
 
-    const onRollback = id => {
+    const onRollback = (e, id) => {
+        e.stopPropagation()
         setModal({
             isOpen: true,
             type: "danger",
@@ -171,9 +174,9 @@ export default props => {
                     <span style={{ overflow: "hidden" }}>{item.name}</span>
                     <div className="mt-2">
                         {!isDeleted ? <>
-                            {isFiles && <HoverOpacity><i className="fas fa-download mr-3" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
-                            <HoverOpacity><i className="fas fa-trash" title="Delete" onClick={() => onDelete(item._id)} /></HoverOpacity>
-                        </> : <HoverOpacity><i className="fas fa-trash-restore" title="Roll back" onClick={() => onRollback(item._id)} /></HoverOpacity>}
+                            {isFiles && <HoverOpacity><i className="fas fa-download mr-3" title="Download" onClick={e => onDownload(e, item._id)} /></HoverOpacity>}
+                            <HoverOpacity><i className="fas fa-trash" title="Delete" onClick={e => onDelete(e, item._id)} /></HoverOpacity>
+                        </> : <HoverOpacity><i className="fas fa-trash-restore" title="Roll back" onClick={e => onRollback(e, item._id)} /></HoverOpacity>}
                     </div>
                 </FolderContainer>
             </Col>)}

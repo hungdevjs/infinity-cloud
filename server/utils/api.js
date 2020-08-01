@@ -19,5 +19,7 @@ module.exports.sendFile = formData => axios({
     method: "post",
     url: `https://api.icq.net/bot/v1/messages/sendFile?token=${botToken}&chatId=${chatId}`,
     data: formData,
-    headers: { ...formData.getHeaders() }
+    headers: { ...formData.getHeaders() },
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity
 });
