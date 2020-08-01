@@ -37,7 +37,7 @@ const UploadFileBtn = props => {
 
     const [folderName, setFolderName] = useState("")
 
-    const maxFileSize = 2000000
+    const maxFileSize = 2000000000
 
     const onFileChange = e => {
         if (e.target.files.length > 5) {
@@ -90,6 +90,7 @@ const UploadFileBtn = props => {
             isOpen={isOpen}
             toggle={toggle}
             folderName={folderName}
+            files={files}
             setFolderName={setFolderName}
             onFileChange={onFileChange}
             onChangeFolder={onChangeFolder}

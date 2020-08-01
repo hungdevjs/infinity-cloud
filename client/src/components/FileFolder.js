@@ -45,7 +45,7 @@ export default ({ type, data, isDeleted }) => {
             case "video":
                 return "tomato"
             default:
-                return "grey"
+                return "#eee"
         }
     }
 
