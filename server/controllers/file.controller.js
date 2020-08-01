@@ -18,9 +18,14 @@ module.exports.getFileAndFolder = async (req, res) => {
 
         const files = allFiles.filter(item => !item.folderId).sort((file1, file2) => file1.name.toLowerCase() < file2.name.toLowerCase() ? -1 : 1)
 
-        const user = await User.findOne({ isDeleted: false, _id }).select("folders")
+        const user = await User.findOne({ isDeleted: false, _id }).select("folders").lean()
 
         const folders = user.folders.filter(item => item.isDeleted === isDeleted).sort((folder1, folder2) => folder1.name.toLowerCase() < folder2.name.toLowerCase() ? -1 : 1)
+
+        for (const folder of folders) {
+            const fileInFolders = allFiles.filter(item => item.folderId == folder._id)
+            folder.files = fileInFolders
+        }
 
         res.json(successFormat({ files, folders }))
     } catch (err) {

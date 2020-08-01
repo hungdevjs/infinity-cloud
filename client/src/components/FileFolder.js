@@ -7,6 +7,7 @@ import noti from "../utils/noti"
 
 import FileType from "./FileType"
 import FileTypeFilter from "./FileTypeFilter"
+import history from "../configs/history"
 
 const FolderContainer = styled.div`
     display: flex;
@@ -63,7 +64,11 @@ export default props => {
         setSearchString(e.target.value)
 
         if (!e.target.value || !e.target.value.trim()) {
-            setDataRender(data && data.filter(item => item.type.includes(currentType)))
+            if (currentType !== "all") {
+                setDataRender(data && data.filter(item => item.type.includes(currentType)))
+            } else {
+                setDataRender(data || [])
+            }
             return
         }
 
@@ -119,6 +124,12 @@ export default props => {
         })
     }
 
+    const onForward = (id) => {
+        if (!isFiles) {
+            history.push(`/folder/${id}`)
+        }
+    }
+
     return <div className="mb-2">
         <h5>{type}</h5>
         {isFiles && <FileTypeFilter currentType={currentType} setCurrentType={setCurrentType} />}
@@ -130,7 +141,7 @@ export default props => {
         </Row>}
         {dataRender && dataRender.length > 0 ? <Row>
             {dataRender.map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
-                <FolderContainer color="#eee">
+                <FolderContainer color="#eee" onClick={() => onForward(item._id)}>
                     {isFiles && <FileType type={item.type} />}
                     <span style={{ overflow: "hidden" }}>{item.name}</span>
                     <div className="mt-2">
