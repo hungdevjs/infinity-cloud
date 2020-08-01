@@ -5,7 +5,7 @@ import { Row, Col } from "reactstrap"
 import FileFolder from "../components/FileFolder"
 import UploadFileBtn from "../components/UploadFileBtn";
 
-import { userGetFileAndFolder } from "../redux/action"
+import { userGetFileAndFolder, userDeleteFile, userDeleteFolder, userRollbackFile, userRollbackFolder, setModal } from "../redux/action"
 
 const Home = props => {
     useEffect(() => {
@@ -20,8 +20,23 @@ const Home = props => {
                 <UploadFileBtn getData={getData} />
             </Col>
         </Row>
-        <FileFolder type="Folders" data={props.folders} isDeleted={props.isDeleted} />
-        <FileFolder type="Files" data={props.files} isDeleted={props.isDeleted} />
+        <FileFolder
+            type="Folders"
+            data={props.folders}
+            isDeleted={props.isDeleted}
+            deleteData={props.userDeleteFolder}
+            rollbackData={props.userRollbackFolder}
+            setModal={props.setModal}
+        />
+
+        <FileFolder
+            type="Files"
+            data={props.files}
+            isDeleted={props.isDeleted}
+            deleteData={props.userDeleteFile}
+            rollbackData={props.userRollbackFile}
+            setModal={props.setModal}
+        />
     </div>
 }
 
@@ -31,7 +46,12 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    userGetFileAndFolder
+    userGetFileAndFolder,
+    userDeleteFile,
+    userDeleteFolder,
+    userRollbackFile,
+    userRollbackFolder,
+    setModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -30,7 +30,9 @@ const HoverOpacity = styled.span`
     }
 `
 
-export default ({ type, data, isDeleted }) => {
+export default props => {
+    const { type, data, isDeleted, deleteData, rollbackData, setModal } = props
+
     const isFiles = type === "Files"
 
     const [dataRender, setDataRender] = useState(data)
@@ -99,6 +101,24 @@ export default ({ type, data, isDeleted }) => {
         }
     }
 
+    const onDelete = id => {
+        setModal({
+            isOpen: true,
+            type: "danger",
+            message: `Are you sure want to delete this ${isFiles ? "file" : "folder"} ?`,
+            onConfirm: () => deleteData(id)
+        })
+    }
+
+    const onRollback = id => {
+        setModal({
+            isOpen: true,
+            type: "danger",
+            message: `Are you sure want to rollback this ${isFiles ? "file" : "folder"} ?`,
+            onConfirm: () => rollbackData(id)
+        })
+    }
+
     return <div className="mb-2">
         <h5>{type}</h5>
         {isFiles && <FileTypeFilter currentType={currentType} setCurrentType={setCurrentType} />}
@@ -116,8 +136,8 @@ export default ({ type, data, isDeleted }) => {
                     <div className="mt-2">
                         {!isDeleted ? <>
                             {isFiles && <HoverOpacity><i className="fas fa-download mr-3" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
-                            <HoverOpacity><i className="fas fa-trash" title="Delete" /></HoverOpacity>
-                        </> : <HoverOpacity><i className="fas fa-trash-restore" title="Restore" /></HoverOpacity>}
+                            <HoverOpacity><i className="fas fa-trash" title="Delete" onClick={() => onDelete(item._id)} /></HoverOpacity>
+                        </> : <HoverOpacity><i className="fas fa-trash-restore" title="Roll back" onClick={() => onRollback(item._id)} /></HoverOpacity>}
                     </div>
                 </FolderContainer>
             </Col>)}

@@ -31,8 +31,9 @@ module.exports.getFileAndFolder = async (req, res) => {
 module.exports.getFileInfo = async (req, res) => {
     try {
         const { _id } = req.params
+        const userId = req.user._id
 
-        const file = await File.findOne({ isDeleted: false, _id })
+        const file = await File.findOne({ isDeleted: false, _id, userId })
         if (!file) {
             throw new Error("File doesn't exist")
         }
@@ -115,7 +116,96 @@ module.exports.getAllFolders = async (req, res) => {
         const folders = user.folders.filter(item => !item.isDeleted)
         res.json(successFormat({ folders }))
     } catch (err) {
-        console.log(err.message)
+        res.json(errorFormat(err.message))
+    }
+}
+
+module.exports.deleteFile = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const { _id } = req.params
+
+        const file = await File.findOne({ isDeleted: false, _id, userId })
+        if (!file) {
+            throw new Error("File doesn't exist")
+        }
+
+        file.isDeleted = true
+        await file.save()
+
+        res.json(successFormat({ data: "File is deleted" }))
+    } catch (err) {
+        res.json(errorFormat(err.message))
+    }
+}
+
+module.exports.deleteFolder = async (req, res) => {
+    try {
+        const { _id } = req.user
+        const { folderId } = req.params
+
+        const user = await User.findOne({ isDeleted: false, _id })
+        if (!user) {
+            throw new Error("User doesn't exist")
+        }
+
+        if (!user.folders || user.folders.length === 0) {
+            throw new Error("User doesn't have any folders")
+        }
+
+        const folder = user.folders.find(item => !item.isDeleted && item._id == folderId)
+        if (!folder) {
+            throw new Error("Folder doesn't exist")
+        }
+
+        folder.isDeleted = true
+        await user.save()
+
+        res.json(successFormat({ data: "Folder is deleted" }))
+    } catch (err) {
+        res.json(errorFormat(err.message))
+    }
+}
+
+module.exports.rollbackFile = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const { _id } = req.params
+
+        const file = await File.findOne({ isDeleted: true, _id, userId })
+        if (!file) {
+            throw new Error("File doesn't exist")
+        }
+
+        file.isDeleted = false
+        await file.save()
+
+        res.json(successFormat({ data: "File is rolled back" }))
+    } catch (err) {
+        res.json(errorFormat(err.message))
+    }
+}
+
+module.exports.rollbackFolder = async (req, res) => {
+    try {
+        const { _id } = req.user
+        const { folderId } = req.params
+
+        const user = await User.findOne({ isDeleted: false, _id })
+        if (!user) {
+            throw new Error("User doesn't exist")
+        }
+
+        const folder = user.folders.find(item => item.isDeleted && item._id == folderId)
+        if (!folder) {
+            throw new Error("Folder doesn't exist")
+        }
+
+        folder.isDeleted = false
+        await user.save()
+
+        res.json(successFormat({ data: "Folder is rolled back" }))
+    } catch (err) {
         res.json(errorFormat(err.message))
     }
 }

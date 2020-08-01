@@ -1,4 +1,4 @@
-import { login, getInfo, getFileAndFolder, uploadFiles } from "../utils/api"
+import { login, getInfo, getFileAndFolder, uploadFiles, deleteFile, deleteFolder, rollbackFile, rollbackFolder } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
@@ -109,3 +109,109 @@ export const upload = ({ formData, folderId, folderName, cb }) => async dispatch
 
     dispatch(setLoading(false))
 }
+
+export const userDeleteFile = id => async dispatch => {
+    dispatch(setLoading(true))
+
+    try {
+        const res = await deleteFile(id)
+        if (!res.data.status) {
+            throw new Error(res.data.error)
+        }
+
+        noti({
+            type: "success",
+            title: "Success",
+            message: res.data.data
+        })
+
+        dispatch(userGetFileAndFolder({ isDeleted: false }))
+    } catch (err) {
+        dispatch(setModal({
+            type: "danger",
+            message: err.message
+        }))
+    }
+
+    dispatch(setLoading(false))
+}
+
+export const userDeleteFolder = id => async dispatch => {
+    dispatch(setLoading(true))
+
+    try {
+        const res = await deleteFolder(id)
+        if (!res.data.status) {
+            throw new Error(res.data.error)
+        }
+
+        noti({
+            type: "success",
+            title: "Success",
+            message: res.data.data
+        })
+
+        dispatch(userGetFileAndFolder({ isDeleted: false }))
+
+    } catch (err) {
+        dispatch(setModal({
+            type: "danger",
+            message: err.message
+        }))
+    }
+
+    dispatch(setLoading(false))
+}
+
+export const userRollbackFile = id => async dispatch => {
+    dispatch(setLoading(true))
+
+    try {
+        const res = await rollbackFile(id)
+        if (!res.data.status) {
+            throw new Error(res.data.error)
+        }
+
+        noti({
+            type: "success",
+            title: "Success",
+            message: res.data.data
+        })
+
+        dispatch(userGetFileAndFolder({ isDeleted: true }))
+    } catch (err) {
+        dispatch(setModal({
+            type: "danger",
+            message: err.message
+        }))
+    }
+
+    dispatch(setLoading(false))
+}
+
+export const userRollbackFolder = id => async dispatch => {
+    dispatch(setLoading(true))
+
+    try {
+        const res = await rollbackFolder(id)
+        if (!res.data.status) {
+            throw new Error(res.data.error)
+        }
+
+        noti({
+            type: "success",
+            title: "Success",
+            message: res.data.data
+        })
+
+        dispatch(userGetFileAndFolder({ isDeleted: true }))
+
+    } catch (err) {
+        dispatch(setModal({
+            type: "danger",
+            message: err.message
+        }))
+    }
+
+    dispatch(setLoading(false))
+} 

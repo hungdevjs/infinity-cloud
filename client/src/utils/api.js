@@ -52,3 +52,11 @@ export const getFileInfo = id => api.get(`/api/file/${id}`)
 export const uploadFiles = (formData, folderId = "", folderName = "") => apiUpload.post(`/api/file/upload?folderId=${folderId}&folderName=${folderName}`, formData)
 
 export const getAllFolders = () => api.get("/api/file/folders")
+
+export const deleteFile = id => api.delete(`/api/file/${id}`)
+
+export const deleteFolder = id => api.delete(`/api/file/folders/${id}`)
+
+export const rollbackFile = id => api.post(`/api/file/rollback/${id}`)
+
+export const rollbackFolder = id => api.post(`/api/file/folders/rollback/${id}`)
