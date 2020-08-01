@@ -43,7 +43,8 @@ const UploadFileBtn = props => {
             props.setModal({
                 isOpen: true,
                 type: "danger",
-                message: "You can choose maximum 5 files each time"
+                message: "You can choose maximum 5 files each time",
+                onConfirm: null
             })
             e.target.value = ""
             return
@@ -54,7 +55,8 @@ const UploadFileBtn = props => {
                 props.setModal({
                     isOpen: true,
                     type: "danger",
-                    message: "Max size for each file is 2GB"
+                    message: "Max size for each file is 2GB",
+                    onConfirm: null
                 })
                 e.target.value = ""
                 return

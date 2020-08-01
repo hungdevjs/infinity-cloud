@@ -98,7 +98,8 @@ export const upload = ({ formData, folderId, folderName, cb }) => async dispatch
             dispatch(setModal({
                 isOpen: true,
                 type: "danger",
-                message: res.data.error
+                message: res.data.error,
+                onConfirm: null
             }))
         } else {
             noti({
@@ -138,7 +139,8 @@ export const userDeleteFile = id => async dispatch => {
     } catch (err) {
         dispatch(setModal({
             type: "danger",
-            message: err.message
+            message: err.message,
+            onConfirm: null
         }))
     }
 
@@ -165,7 +167,8 @@ export const userDeleteFolder = id => async dispatch => {
     } catch (err) {
         dispatch(setModal({
             type: "danger",
-            message: err.message
+            message: err.message,
+            onConfirm: null
         }))
     }
 
@@ -191,7 +194,8 @@ export const userRollbackFile = id => async dispatch => {
     } catch (err) {
         dispatch(setModal({
             type: "danger",
-            message: err.message
+            message: err.message,
+            onConfirm: null
         }))
     }
 
@@ -218,7 +222,8 @@ export const userRollbackFolder = id => async dispatch => {
     } catch (err) {
         dispatch(setModal({
             type: "danger",
-            message: err.message
+            message: err.message,
+            onConfirm: null
         }))
     }
 
