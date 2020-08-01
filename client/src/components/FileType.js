@@ -2,7 +2,7 @@ import React from "react"
 import styled from "styled-components"
 
 const FileTypeContainer = styled.div`
-    width: 18%;
+    width: 15%;
     height: 8px;
     margin-bottom: 8px;
     background-color: ${props => props.backgroundColor};

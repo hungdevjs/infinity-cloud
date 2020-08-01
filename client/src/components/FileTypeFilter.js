@@ -3,7 +3,7 @@ import {Row, Col} from "reactstrap"
 
 import FileType from "./FileType"
 
-const types = ["all", "audio", "image", "text", "application"]
+const types = ["all", "image", "video", "text", "audio", "application"]
 
 export default ({ currentType, setCurrentType }) => {
 
