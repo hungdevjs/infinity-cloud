@@ -73,7 +73,7 @@ module.exports.uploadFile = async (req, res) => {
             if (!oldFolder) {
                 user.folders = [...user.folders, { name: folderName.trim(), isDeleted: false }]
                 await user.save()
-                newFolderId = user.folders.find(item => item.name === folderName)
+                newFolderId = user.folders.find(item => item.name === folderName)._id
             } else {
                 newFolderId = oldFolder._id
             }
