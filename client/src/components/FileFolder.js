@@ -5,6 +5,9 @@ import styled from "styled-components"
 import { getFileInfo } from "../utils/api"
 import noti from "../utils/noti"
 
+import FileType from "./FileType"
+import FileTypeFilter from "./FileTypeFilter"
+
 const FolderContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -32,30 +35,52 @@ export default ({ type, data, isDeleted }) => {
 
     const [dataRender, setDataRender] = useState(data)
 
+    const [searchString, setSearchString] = useState("")
+    const [currentType, setCurrentType] = useState("all")
+
     useEffect(() => {
         setDataRender(data)
     }, [data])
 
-    const typeColor = type => {
-        if (!isFiles) return "#eee"
-
-        switch (type) {
-            case "image":
-                return "dodgerblue"
-            case "video":
-                return "tomato"
-            default:
-                return "#eee"
+    useEffect(() => {
+        if (currentType == "all") {
+            setDataRender(data && data.filter(item => item.name.toUpperCase().includes(searchString.toUpperCase())))
+            return
         }
+
+        let filteredData = data.filter(item => item.type.includes(currentType))
+
+        if (searchString && searchString.trim()) {
+            filteredData = filteredData.filter(item => item.name.toUpperCase().includes(searchString.toUpperCase()))
+        }
+
+        setDataRender(filteredData)
+    }, [currentType])
+
+    const onSearchFile = e => {
+        setSearchString(e.target.value)
+
+        if (!e.target.value || !e.target.value.trim()) {
+            setDataRender(data && data.filter(item => item.type.includes(currentType)))
+            return
+        }
+
+        let filteredData = data.filter(item => item.name.toUpperCase().includes(e.target.value.toUpperCase()))
+
+        if (currentType !== "all") {
+            filteredData = filteredData.filter(item => item.type.includes(currentType))
+        }
+
+        setDataRender(filteredData)
     }
 
-    const onSearch = e => {
+    const onSearchFolder = e => {
         if (!e.target.value || !e.target.value.trim()) {
             setDataRender(data)
             return
         }
 
-        const filteredData = dataRender.filter(item => item.name.toUpperCase().includes(e.target.value.toUpperCase()))
+        const filteredData = data.filter(item => item.name.toUpperCase().includes(e.target.value.toUpperCase()))
         setDataRender(filteredData)
     }
 
@@ -76,19 +101,21 @@ export default ({ type, data, isDeleted }) => {
 
     return <div className="px-3 mb-2">
         <h5>{type}</h5>
+        {isFiles && <FileTypeFilter currentType={currentType} setCurrentType={setCurrentType} />}
         {data && data.length > 0 && <Row className="mb-3">
             <Col md={4} className="mb-2">
-                <Input placeholder="Search" onChange={e => onSearch(e)} />
+                <Input placeholder="Search" onChange={e => (isFiles ? onSearchFile : onSearchFolder)(e)} />
             </Col>
             <Col md={8} />
         </Row>}
         {dataRender && dataRender.length > 0 ? <Row>
             {dataRender.map((item, index) => <Col className="mb-3" key={index} md={3} sm={6}>
-                <FolderContainer color={typeColor(item.type)}>
+                <FolderContainer color="#eee">
+                    {isFiles && <FileType type={item.type} />}
                     <span style={{ overflow: "hidden" }}>{item.name}</span>
                     <div className="mt-2">
                         {!isDeleted ? <>
-                            {isFiles && <HoverOpacity><i className="fas fa-download mr-2" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
+                            {isFiles && <HoverOpacity><i className="fas fa-download mr-3" title="Download" onClick={() => onDownload(item._id)} /></HoverOpacity>}
                             <HoverOpacity><i className="fas fa-trash" title="Delete" /></HoverOpacity>
                         </> : <HoverOpacity><i className="fas fa-trash-restore" title="Restore" /></HoverOpacity>}
                     </div>

@@ -33,7 +33,7 @@ const UploadFileBtn = props => {
 
     const [files, setFiles] = useState([])
 
-    const [folderId, setFolderId] = useState(null)
+    const [folderId, setFolderId] = useState("")
 
     const [folderName, setFolderName] = useState("")
 
@@ -76,7 +76,8 @@ const UploadFileBtn = props => {
         const cb = () => {
             toggle()
             setFolderName("")
-            setFolderId(null)
+            setFolderId("")
+            setFiles([])
             props.getData()
         }
 

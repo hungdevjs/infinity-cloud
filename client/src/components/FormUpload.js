@@ -36,7 +36,7 @@ export default ({
     const onChangeOption = () => {
         setNewFolder(!newFolder)
         setFolderName("")
-        onChangeFolder({ value: null })
+        onChangeFolder({ value: "" })
     }
 
     return <ViewModal

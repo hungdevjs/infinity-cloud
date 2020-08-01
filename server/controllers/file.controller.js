@@ -16,11 +16,11 @@ module.exports.getFileAndFolder = async (req, res) => {
 
         const allFiles = await File.find({ isDeleted, userId: _id })
 
-        const files = allFiles.filter(item => !item.folderId)
+        const files = allFiles.filter(item => !item.folderId).sort((file1, file2) => file1.name.toLowerCase() < file2.name.toLowerCase() ? -1 : 1)
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders")
 
-        const folders = user.folders.filter(item => item.isDeleted === isDeleted)
+        const folders = user.folders.filter(item => item.isDeleted === isDeleted).sort((folder1, folder2) => folder1.name.toLowerCase() < folder2.name.toLowerCase() ? -1 : 1)
 
         res.json(successFormat({ files, folders }))
     } catch (err) {
@@ -62,10 +62,10 @@ module.exports.uploadFile = async (req, res) => {
 
         const { folderId, folderName } = req.query
         let newFolderId = null
-        if (folderName) {
+        if (folderName && folderName.trim()) {
             const oldFolder = user.folders.find(item => item.name.trim() === folderName.trim())
             if (!oldFolder) {
-                user.folders = [...user.folders, { name: folderName, isDeleted: false }]
+                user.folders = [...user.folders, { name: folderName.trim(), isDeleted: false }]
                 await user.save()
                 newFolderId = user.folders.find(item => item.name === folderName)
             } else {
@@ -88,8 +88,8 @@ module.exports.uploadFile = async (req, res) => {
                 isDeleted: false
             })
 
-            if (folderId !== "null" || newFolderId) {
-                newFile.folderId = folderId || newFolderId
+            if (newFolderId || folderId) {
+                newFile.folderId = newFolderId || folderId
             }
 
             await newFile.save()
