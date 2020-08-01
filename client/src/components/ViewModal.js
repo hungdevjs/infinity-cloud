@@ -10,7 +10,7 @@ export default ({
     noFooter
 }) => (
         <Modal toggle={toggle} isOpen={isOpen} centered>
-            <ModalHeader toggle={toggle}>{title}</ModalHeader>
+            <ModalHeader toggle={toggle} style={{ overflow: "hidden" }}>{title}</ModalHeader>
             <ModalBody>
                 {children}
             </ModalBody>
