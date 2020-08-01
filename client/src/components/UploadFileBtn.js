@@ -39,7 +39,7 @@ const UploadFileBtn = props => {
     const maxFileSize = 2000000000
 
     const onFileChange = e => {
-        if (e.target.files.length > 5) {
+        if (e.target.files.length > 10) {
             props.setModal({
                 isOpen: true,
                 type: "danger",

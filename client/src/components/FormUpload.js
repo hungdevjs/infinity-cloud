@@ -49,7 +49,7 @@ export default ({
             <FormGroup>
                 <Row>
                     <Col md={12} className="mb-2">
-                        <h6>You can choose maximum 5 files each times, and 2GB is maximum for each file</h6>
+                        <h6>You can choose maximum 10 files each times, and 10MB is maximum for each file</h6>
                     </Col>
                     {files && files.length > 0 && <Col md={12} className="mb-2">
                         You choose {files.length} files.
