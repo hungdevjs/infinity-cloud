@@ -41,6 +41,15 @@ export const userLogin = data => async dispatch => {
     dispatch(setLoading(false))
 }
 
+export const userLogout = () => async dispatch => {
+    localStorage.removeItem("accessToken")
+    dispatch({
+        type: "SET_USER",
+        payload: null
+    })
+    return
+}
+
 export const userGetInfo = () => async dispatch => {
     try {
         const res = await getInfo()

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from "react-redux"
 import { Form, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap'
 
 import { userLogin } from "../redux/action"
-import noti from "../utils/noti"
+import history from '../configs/history'
 
 const iconStyle = {
     width: '40px'
@@ -13,10 +13,14 @@ const Login = (props) => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    useEffect(() => {
+        if (props.user || localStorage.getItem("accessToken")) {
+            history.push("/")
+        }
+    }, [])
+
     const onSubmit = async e => {
         e.preventDefault()
-
-        // send email and password to server 
         await props.userLogin({ email, password })
     }
 
