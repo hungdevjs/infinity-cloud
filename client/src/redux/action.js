@@ -1,4 +1,4 @@
-import { login, getInfo, getFileAndFolder, uploadFiles, deleteFile, deleteFolder, rollbackFile, rollbackFolder } from "../utils/api"
+import { login, getInfo, getFileAndFolder, uploadFiles } from "../utils/api"
 import noti from "../utils/noti"
 import history from "../configs/history"
 
@@ -69,10 +69,10 @@ export const userGetInfo = () => async dispatch => {
     }
 }
 
-export const userGetFileAndFolder = ({ isDeleted }) => async dispatch => {
+export const userGetFileAndFolder = ({ isDeleted, year, month }) => async dispatch => {
     dispatch(setLoading(true))
     try {
-        const res = await getFileAndFolder(isDeleted)
+        const res = await getFileAndFolder(isDeleted, year, month)
 
         const { files, folders } = res.data
 
@@ -89,11 +89,11 @@ export const userGetFileAndFolder = ({ isDeleted }) => async dispatch => {
     dispatch(setLoading(false))
 }
 
-export const upload = ({ formData, folderId, folderName, cb }) => async dispatch => {
+export const upload = ({ formData, folderId, minutes, seconds, folderName, cb }) => async dispatch => {
     dispatch(setLoading(true))
 
     try {
-        const res = await uploadFiles(formData, folderId, folderName)
+        const res = await uploadFiles(formData, folderId, folderName, minutes, seconds)
         if (!res.data.status) {
             dispatch(setModal({
                 isOpen: true,
@@ -120,112 +120,112 @@ export const upload = ({ formData, folderId, folderName, cb }) => async dispatch
     dispatch(setLoading(false))
 }
 
-export const userDeleteFile = id => async dispatch => {
-    dispatch(setLoading(true))
+// export const userDeleteFile = id => async dispatch => {
+//     dispatch(setLoading(true))
 
-    try {
-        const res = await deleteFile(id)
-        if (!res.data.status) {
-            throw new Error(res.data.error)
-        }
+//     try {
+//         const res = await deleteFile(id)
+//         if (!res.data.status) {
+//             throw new Error(res.data.error)
+//         }
 
-        noti({
-            type: "success",
-            title: "Success",
-            message: res.data.data
-        })
+//         noti({
+//             type: "success",
+//             title: "Success",
+//             message: res.data.data
+//         })
 
-        dispatch(userGetFileAndFolder({ isDeleted: false }))
-    } catch (err) {
-        dispatch(setModal({
-            type: "danger",
-            message: err.message,
-            onConfirm: null
-        }))
-    }
+//         dispatch(userGetFileAndFolder({ isDeleted: false }))
+//     } catch (err) {
+//         dispatch(setModal({
+//             type: "danger",
+//             message: err.message,
+//             onConfirm: null
+//         }))
+//     }
 
-    dispatch(setLoading(false))
-}
+//     dispatch(setLoading(false))
+// }
 
-export const userDeleteFolder = id => async dispatch => {
-    dispatch(setLoading(true))
+// export const userDeleteFolder = id => async dispatch => {
+//     dispatch(setLoading(true))
 
-    try {
-        const res = await deleteFolder(id)
-        if (!res.data.status) {
-            throw new Error(res.data.error)
-        }
+//     try {
+//         const res = await deleteFolder(id)
+//         if (!res.data.status) {
+//             throw new Error(res.data.error)
+//         }
 
-        noti({
-            type: "success",
-            title: "Success",
-            message: res.data.data
-        })
+//         noti({
+//             type: "success",
+//             title: "Success",
+//             message: res.data.data
+//         })
 
-        dispatch(userGetFileAndFolder({ isDeleted: false }))
+//         dispatch(userGetFileAndFolder({ isDeleted: false }))
 
-    } catch (err) {
-        dispatch(setModal({
-            type: "danger",
-            message: err.message,
-            onConfirm: null
-        }))
-    }
+//     } catch (err) {
+//         dispatch(setModal({
+//             type: "danger",
+//             message: err.message,
+//             onConfirm: null
+//         }))
+//     }
 
-    dispatch(setLoading(false))
-}
+//     dispatch(setLoading(false))
+// }
 
-export const userRollbackFile = id => async dispatch => {
-    dispatch(setLoading(true))
+// export const userRollbackFile = id => async dispatch => {
+//     dispatch(setLoading(true))
 
-    try {
-        const res = await rollbackFile(id)
-        if (!res.data.status) {
-            throw new Error(res.data.error)
-        }
+//     try {
+//         const res = await rollbackFile(id)
+//         if (!res.data.status) {
+//             throw new Error(res.data.error)
+//         }
 
-        noti({
-            type: "success",
-            title: "Success",
-            message: res.data.data
-        })
+//         noti({
+//             type: "success",
+//             title: "Success",
+//             message: res.data.data
+//         })
 
-        dispatch(userGetFileAndFolder({ isDeleted: true }))
-    } catch (err) {
-        dispatch(setModal({
-            type: "danger",
-            message: err.message,
-            onConfirm: null
-        }))
-    }
+//         dispatch(userGetFileAndFolder({ isDeleted: true }))
+//     } catch (err) {
+//         dispatch(setModal({
+//             type: "danger",
+//             message: err.message,
+//             onConfirm: null
+//         }))
+//     }
 
-    dispatch(setLoading(false))
-}
+//     dispatch(setLoading(false))
+// }
 
-export const userRollbackFolder = id => async dispatch => {
-    dispatch(setLoading(true))
+// export const userRollbackFolder = id => async dispatch => {
+//     dispatch(setLoading(true))
 
-    try {
-        const res = await rollbackFolder(id)
-        if (!res.data.status) {
-            throw new Error(res.data.error)
-        }
+//     try {
+//         const res = await rollbackFolder(id)
+//         if (!res.data.status) {
+//             throw new Error(res.data.error)
+//         }
 
-        noti({
-            type: "success",
-            title: "Success",
-            message: res.data.data
-        })
+//         noti({
+//             type: "success",
+//             title: "Success",
+//             message: res.data.data
+//         })
 
-        dispatch(userGetFileAndFolder({ isDeleted: true }))
+//         dispatch(userGetFileAndFolder({ isDeleted: true }))
 
-    } catch (err) {
-        dispatch(setModal({
-            type: "danger",
-            message: err.message,
-            onConfirm: null
-        }))
-    }
+//     } catch (err) {
+//         dispatch(setModal({
+//             type: "danger",
+//             message: err.message,
+//             onConfirm: null
+//         }))
+//     }
 
-    dispatch(setLoading(false))
-} 
+//     dispatch(setLoading(false))
+// } 

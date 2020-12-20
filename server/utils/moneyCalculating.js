@@ -1,0 +1,1 @@
+module.exports = (minutes, seconds) => (parseInt(minutes) + parseInt(seconds) / 60) * process.env.MONEY_PER_MIN

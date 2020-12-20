@@ -6,12 +6,13 @@ import FormUpload from "./FormUpload"
 import useModal from "../hooks/useModal"
 
 import { setModal, upload } from "../redux/action"
+import noti from "../utils/noti"
 
 const UploadFileButton = styled.button`
     background-color: #ddd;
     width: 100%;
     padding: 8px 16px;
-    border-radius: 20px;
+    border-radius: 4px;
     border: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
     cursor: pointer;
@@ -31,6 +32,8 @@ const UploadFileBtn = props => {
     const [isOpen, toggle] = useModal()
 
     const [files, setFiles] = useState([])
+    const [minutes, setMinutes] = useState(0)
+    const [seconds, setSeconds] = useState(0)
 
     const [folderId, setFolderId] = useState("")
 
@@ -69,6 +72,24 @@ const UploadFileBtn = props => {
     const onUpload = async e => {
         e.preventDefault()
 
+        if (!minutes && !seconds) {
+            noti({
+                type: "danger",
+                title: "Failed",
+                message: "Minutes and seconds is required"
+            })
+            return
+        }
+
+        if (seconds < 0 || seconds > 60) {
+            noti({
+                type: "danger",
+                title: "Failed",
+                message: "Invalid seconds"
+            })
+            return
+        }
+
         const formData = new FormData()
         for (const key of Object.keys(files)) {
             formData.append('files', files[key])
@@ -82,7 +103,7 @@ const UploadFileBtn = props => {
             props.getData()
         }
 
-        props.upload({ formData, folderId, folderName, cb })
+        props.upload({ formData, folderId, minutes, seconds, folderName, cb })
     }
 
     const onChangeFolder = e => setFolderId(e.value)
@@ -92,7 +113,10 @@ const UploadFileBtn = props => {
             isOpen={isOpen}
             toggle={toggle}
             folderName={folderName}
-            files={files}
+            minutes={minutes}
+            setMinutes={setMinutes}
+            seconds={seconds}
+            setSeconds={setSeconds}
             setFolderName={setFolderName}
             onFileChange={onFileChange}
             onChangeFolder={onChangeFolder}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { connect } from "react-redux"
 
-import { userGetFileAndFolder, userDeleteFile, setModal } from "../redux/action"
+import { userGetFileAndFolder, setModal } from "../redux/action"
 import FileFolder from "../components/FileFolder"
 import history from "../configs/history"
 
@@ -45,7 +45,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     userGetFileAndFolder,
-    userDeleteFile,
     setModal
 }
 

@@ -1,9 +1,11 @@
 const fs = require("fs")
+const moment = require("moment")
 const FormData = require("form-data");
 
 const { getFileInfo, sendFile } = require("../utils/api")
 
-const { errorFormat, successFormat } = require("../utils/format")
+const { errorFormat, successFormat, dateTimeFormat } = require("../utils/format")
+const moneyCalculating = require("../utils/moneyCalculating")
 
 const File = require("../models/file.model")
 const User = require("../models/user.model")
@@ -13,10 +15,16 @@ module.exports.getFileAndFolder = async (req, res) => {
         const { _id } = req.user
 
         const isDeleted = req.query.isDeleted === "true"
+        const { year, month } = req.query
 
         const allFiles = await File.find({ isDeleted, userId: _id })
 
-        const files = allFiles.filter(item => !item.folderId).sort((file1, file2) => file1.name.toLowerCase() < file2.name.toLowerCase() ? -1 : 1)
+        const files = allFiles.filter(item => {
+            const itemMonth = item.date.split("-")[1]
+            const itemYear = item.date.split("-")[2].slice(0, 4)
+
+            return !item.folderId && itemMonth === month && itemYear === year
+        })
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders").lean()
 
@@ -29,6 +37,7 @@ module.exports.getFileAndFolder = async (req, res) => {
 
         res.json(successFormat({ files, folders }))
     } catch (err) {
+        console.error(err)
         res.json(errorFormat(err.message))
     }
 }
@@ -66,7 +75,7 @@ module.exports.uploadFile = async (req, res) => {
             throw new Error("User doesn't exist")
         }
 
-        const { folderId, folderName } = req.query
+        const { folderId, folderName, minutes, seconds } = req.query
         let newFolderId = null
         if (folderName && folderName.trim()) {
             const oldFolder = user.folders.find(item => item.name.trim() === folderName.trim())
@@ -90,6 +99,10 @@ module.exports.uploadFile = async (req, res) => {
                 name: file.originalname,
                 type: file.mimetype,
                 fileId: res.data.fileId,
+                minutes,
+                seconds,
+                date: moment().format(dateTimeFormat),
+                money: moneyCalculating(minutes, seconds),
                 userId: _id,
                 isDeleted: false
             })

@@ -22,6 +22,22 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
+    minutes: {
+        type: Number,
+        required: true
+    },
+    seconds: {
+        type: Number,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    money: {
+        type: Number,
+        require: true
+    },
     isDeleted: {
         type: Boolean,
         required: true

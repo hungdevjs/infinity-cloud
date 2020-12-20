@@ -3,7 +3,7 @@ import { connect } from "react-redux"
 import { Form, FormGroup, InputGroup, InputGroupAddon, InputGroupText, Input, Button } from 'reactstrap'
 
 import { userLogin } from "../redux/action"
-import history from '../configs/history'
+import history from "../configs/history"
 
 const iconStyle = {
     width: '40px'

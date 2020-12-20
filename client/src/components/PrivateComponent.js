@@ -18,8 +18,8 @@ const PrivateComponent = (props) => {
     const Component = route.component
 
     return <div className="py-5 px-3">
-        <UserIcon />
-        <Sidebar />
+        {/* <UserIcon />
+        <Sidebar /> */}
         <Component />
     </div>
 }
