@@ -74,11 +74,11 @@ export const userGetFileAndFolder = ({ isDeleted, year, month }) => async dispat
     try {
         const res = await getFileAndFolder(isDeleted, year, month)
 
-        const { files, folders } = res.data
+        const { files, folders, totalMoney, totalTime } = res.data
 
         dispatch({
             type: "SET_FILES_FOLDERS",
-            payload: { files, folders }
+            payload: { files, folders, totalMoney, totalTime }
         })
     } catch (err) {
         noti({

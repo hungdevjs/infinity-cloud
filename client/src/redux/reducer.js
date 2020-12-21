@@ -8,7 +8,9 @@ export default (state = {
         onConfirm: null
     },
     files: null,
-    folders: null
+    folders: null,
+    totalTime: "",
+    totalMoney: 0
 }, action) => {
     switch (action.type) {
         case "SET_USER":
@@ -36,7 +38,9 @@ export default (state = {
             return {
                 ...state,
                 files: action.payload.files,
-                folders: action.payload.folders
+                folders: action.payload.folders,
+                totalMoney: action.payload.totalMoney,
+                totalTime: action.payload.totalTime
             }
 
         default:

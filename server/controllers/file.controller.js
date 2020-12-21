@@ -26,6 +26,17 @@ module.exports.getFileAndFolder = async (req, res) => {
 
                 return !item.folderId && itemMonth === month && itemYear === year
             })
+            .sort()
+            .reverse()
+
+        const minutes = files.reduce((total, file) => total + file.minutes, 0)
+        const seconds = files.reduce((total, file) => total + file.seconds, 0)
+
+        const totalMinutes = minutes + Math.floor(seconds / 60)
+        const totalSeconds = seconds % 60
+
+        const totalTime = `${totalMinutes} mins ${totalSeconds} seconds`
+        const totalMoney = moneyCalculating(totalMinutes, totalSeconds)
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders").lean()
 
@@ -36,7 +47,7 @@ module.exports.getFileAndFolder = async (req, res) => {
             folder.files = fileInFolders
         }
 
-        res.json(successFormat({ files, folders }))
+        res.json(successFormat({ files, folders, totalTime, totalMoney }))
     } catch (err) {
         console.error(err)
         res.json(errorFormat(err.message))

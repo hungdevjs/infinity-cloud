@@ -101,7 +101,7 @@ const Home = props => {
                                 {props.files.map((file, index) => <tr key={index}>
                                     <td>{file.name}</td>
                                     <td>{file.date}</td>
-                                    <td>{file.minutes} min {file.seconds} sec</td>
+                                    <td>{file.minutes} mins {file.seconds} seconds</td>
                                     <td>{file.money.toLocaleString()} VND</td>
                                     <td className="text-center">
                                         <i
@@ -111,6 +111,13 @@ const Home = props => {
                                         />
                                     </td>
                                 </tr>)}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td className="font-weight-bold">{props.totalTime}</td>
+                                    <td className="font-weight-bold">{props.totalMoney.toLocaleString()} VND</td>
+                                    <td></td>
+                                </tr>
                             </tbody>
                         </Table>
                         : <Alert color="primary">No file to display</Alert>}
@@ -122,7 +129,9 @@ const Home = props => {
 
 const mapStateToProps = state => ({
     files: state.files,
-    folders: state.folders
+    folders: state.folders,
+    totalTime: state.totalTime,
+    totalMoney: state.totalMoney
 })
 
 const mapDispatchToProps = {
