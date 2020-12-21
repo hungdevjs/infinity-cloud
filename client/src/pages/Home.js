@@ -80,7 +80,7 @@ const Home = props => {
                         onChange={e => setMonth(e.value)}
                     />
                 </Col>
-                <Col md={2} className="text-right">
+                <Col md={6} className="text-right">
                     <UploadFileBtn getData={getData} />
                 </Col>
             </Row>

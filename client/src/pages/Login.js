@@ -27,7 +27,7 @@ const Login = (props) => {
     return <div className="min-vh-100 min-vw-100 d-flex align-items-center justify-content-center">
         <Form onSubmit={e => onSubmit(e)}>
             <FormGroup>
-                <h4>Infinity Cloud</h4>
+                <h4>Translation Management</h4>
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
                         <InputGroupText style={iconStyle}>
