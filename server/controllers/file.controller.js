@@ -19,12 +19,13 @@ module.exports.getFileAndFolder = async (req, res) => {
 
         const allFiles = await File.find({ isDeleted, userId: _id })
 
-        const files = allFiles.filter(item => {
-            const itemMonth = item.date.split("-")[1]
-            const itemYear = item.date.split("-")[2].slice(0, 4)
+        const files = allFiles
+            .filter(item => {
+                const itemMonth = item.date.split("-")[1]
+                const itemYear = item.date.split("-")[2].slice(0, 4)
 
-            return !item.folderId && itemMonth === month && itemYear === year
-        })
+                return !item.folderId && itemMonth === month && itemYear === year
+            })
 
         const user = await User.findOne({ isDeleted: false, _id }).select("folders").lean()
 
@@ -101,7 +102,7 @@ module.exports.uploadFile = async (req, res) => {
                 fileId: res.data.fileId,
                 minutes,
                 seconds,
-                date: moment().format(dateTimeFormat),
+                date: moment().utcOffset(420).format(dateTimeFormat),
                 money: moneyCalculating(minutes, seconds),
                 userId: _id,
                 isDeleted: false
