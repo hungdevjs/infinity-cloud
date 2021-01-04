@@ -14,17 +14,19 @@ module.exports.getFileAndFolder = async (req, res) => {
     try {
         const { _id } = req.user
 
+        console.log({ _id })
+
         const isDeleted = req.query.isDeleted === "true"
         const { year, month } = req.query
 
-        const allFiles = await File.find({ isDeleted, userId: _id })
+        const allFiles = await File.find({ userId: _id })
 
         const files = allFiles
             .filter(item => {
                 const itemMonth = item.date.split("-")[1]
                 const itemYear = item.date.split("-")[2].slice(0, 4)
 
-                return !item.folderId && itemMonth === month && itemYear === year
+                return !item.folderId && parseInt(itemMonth) === parseInt(month) && parseInt(itemYear) === parseInt(year)
             })
             .sort()
             .reverse()
